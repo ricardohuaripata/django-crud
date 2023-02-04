@@ -1,0 +1,63 @@
+
+1-instalar django: pip install django
+
+2-crear proyecto django: django-admin startproject myproject
+myproject es el nombre que asignameros nosotros para nuestro proyecto
+
+3-situarse en el proyecto creado por django: cd myproject
+
+4-iniciar servidor: python manage.py runserver
+
+5-crear aplicacion: python manage.py startapp libreria
+libreria sera el nombre de nuestra aplicacion
+
+6-Dirigirse en setting.py y añadir en la seccion INSTALLED_APPS la aplicacion que acabamos de crear "libreria"
+
+7-Instalar paquetes para mysql y pillow: pip3 install PyMySQL, pip3 install pillow
+
+8-Configurar parametros para la base de datos en el archivo settings.py del proyecto:
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'libreria',
+        'USER': 'ricardohuaripata',
+        'PASSWORD': 'ricardohuaripata',
+        'HOST': 'localhost',
+        'PORT': '3306',
+
+    }
+}
+
+9-Añadir en el archivo __init__.py del proyecto:
+
+import pymysql
+pymysql.install_as_MySQLdb()
+
+10-Crear modelo de tablas para la base de datos, en el archivo models.py de la aplicacion:
+
+from django.db import models
+
+# Create your models here.
+
+class Libro(models.Model):
+    id_libro = models.AutoField(primary_key=True)
+    titulo = models.CharField(max_length=100, verbose_name='Titulo')
+    imagen = models.ImageField(upload_to='imagenes/', null=True, verbose_name='Imagen')
+    descripcion = models.TextField(max_length=1000, null=True, verbose_name='Descripcion')
+
+11-Crear migraciones para poder crear las tablas en la base e datos: python manage.py makemigrations.
+Luego enviar migraciones: python manage.py migrate
+ (hecho esto, se nos crearan las tablas en la base datos a partir de los models que hayamos creado)
+(si quisieramos volver a reestructurar las tablas habria que volver a ejecutar esos 2 comandos)
+
+12-En el archivo admin.py de la aplicacion registrar el model Libro
+
+from django.contrib import admin
+from .models import Libro
+# Register your models here.
+
+admin.site.register(Libro)
+
+13-Crear usuario admin: python manage.py createsuperuser
+(Podremos acceder a la ruta "http://127.0.0.1:8000/admin/" si queremos administrar informacion de la base de datos)
